@@ -3,12 +3,14 @@ from rest_framework.relations import SlugRelatedField
 from posts.models import Comment, Follow, Group, Post, User
 from django.shortcuts import get_object_or_404
 
+
 class GroupSerializer(serializers.ModelSerializer):
     author = SlugRelatedField(slug_field='username', read_only=True)
 
     class Meta:
         fields = '__all__'
         model = Group
+
 
 class PostSerializer(serializers.ModelSerializer):
     author = SlugRelatedField(slug_field='username', read_only=True)
@@ -27,6 +29,7 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
         model = Comment
+
 
 class FollowSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(
@@ -55,4 +58,3 @@ class FollowSerializer(serializers.ModelSerializer):
                 'Подписка на этого автора уже есть'
             )
         return attrs
-
