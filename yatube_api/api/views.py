@@ -5,7 +5,7 @@ from posts.models import Post, Comment, Group, Follow
 # from yatube_api.posts.models import Group
 from .serializers import PostSerializer, CommentSerializer, GroupSerializer
 from .serializers import FollowSerializer
-from rest_framework.views import PermissionDenied
+# from rest_framework.views import PermissionDenied
 # vfrom rest_framework.pagination import PageNumberPagination
 from .permissions import ReadOnlyPermission
 from rest_framework.response import Response
