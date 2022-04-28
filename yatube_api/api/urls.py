@@ -5,10 +5,10 @@ from api.views import PostViewSet, CommentViewSet, GroupViewSet, FollowViewSet
 # from rest_framework.authtoken import views
 
 router_v1 = SimpleRouter()
-router_v1.register('posts', PostViewSet, basename='api/v1/posts')
-router_v1.register('groups', GroupViewSet, basename='api/v1/groups')
+router_v1.register('posts', PostViewSet, basename='posts')
+router_v1.register('groups', GroupViewSet, basename='groups')
 router_v1.register(r'posts/(?P<post_id>[^/.]+)/comments',
-                   CommentViewSet, basename='api/v1/comments')
+                   CommentViewSet, basename='comments')
 router_v1.register('follow', FollowViewSet, basename='following')
 
 

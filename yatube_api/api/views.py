@@ -25,9 +25,6 @@ class GroupViewSet(viewsets.ReadOnlyModelViewSet):
     # permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     permission_classes = (ReadOnlyPermission,)
 
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
-
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
@@ -39,16 +36,6 @@ class PostViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
-    def perform_update(self, serializer):
-        if serializer.instance.author != self.request.user:
-            raise PermissionDenied('Изменение чужого поста невозможно!')
-        super().perform_update(serializer)
-
-    def perform_destroy(self, instance):
-        if instance.author != self.request.user:
-            raise PermissionDenied('Изменение чужого поста невозможно!')
-        instance.delete()
-
 
 class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = (ReadOnlyPermission,)
@@ -56,8 +43,9 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         serializer = CommentSerializer(data=request.data)
+        post = get_object_or_404(Post, pk=self.kwargs.get('post_id'))
         if serializer.is_valid():
-            serializer.save(author=request.user)
+            serializer.save(author=request.user, post=post)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
